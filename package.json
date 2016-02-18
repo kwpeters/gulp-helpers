@@ -1,0 +1,22 @@
+{
+  "name": "gulp-helpers",
+  "version": "1.0.0",
+  "description": "Utilities that make using Gulp easier.",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kwpeters/gulp-helpers.git"
+  },
+  "keywords": [
+    "gulp"
+  ],
+  "author": "Kevin Peters <kwpeters@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kwpeters/gulp-helpers/issues"
+  },
+  "homepage": "https://github.com/kwpeters/gulp-helpers"
+}
