@@ -18,5 +18,10 @@
   "bugs": {
     "url": "https://github.com/kwpeters/gulp-helpers/issues"
   },
-  "homepage": "https://github.com/kwpeters/gulp-helpers"
+  "homepage": "https://github.com/kwpeters/gulp-helpers",
+  "dependencies": {
+    "es6-promise": "3.1.2",
+    "merge-stream": "1.0.0",
+    "stream-consume": "0.1.0"
+  }
 }
