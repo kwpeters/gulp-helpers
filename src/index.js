@@ -82,8 +82,9 @@ function buildTypeScript(srcGlobs, jsOutputDir, typingsOutputDir) {
 
 
 // Just like Node's child_process.exec(), but returns a promise.  The promise is
-// fulfilled (with stdout) when the process exits successfully.  The promise is
-// rejected with an Error object otherwise.
+// fulfilled (with stdout) when the process exits successfully.  If the process
+// exits with an error the promise is rejected with an object containing 'err',
+// 'stdout' and 'stderr' properties.
 function exec(command, options) {
     "use strict";
 
@@ -95,8 +96,9 @@ function exec(command, options) {
             options,
             function (err, stdout, stderr) {
                 if (err) {
-                    console.log(stderr);
-                    reject(err);
+                    reject({error:  err,
+                            stdout: stdout,
+                            stderr: stderr});
                     return;
                 }
 
