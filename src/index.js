@@ -1,6 +1,5 @@
-/* global gulp */
-
-var Promise     = require("es6-promise").Promise;
+var Promise     = require("es6-promise").Promise,
+    gulp        = require("gulp");
 
 
 /**
