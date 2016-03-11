@@ -85,7 +85,7 @@ function buildTypeScript(srcGlobs, jsOutputDir, typingsOutputDir) {
                          .pipe(gulp.dest(typingsOutputDir)));
     }
 
-    streamsToPromise.apply(null, streams);
+    return streamsToPromise.apply(null, streams);
 }
 
 
