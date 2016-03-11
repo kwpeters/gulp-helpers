@@ -42,6 +42,15 @@ function streamsToPromise(var_args) { //eslint-disable-line no-unused-vars
 }
 
 
+/**
+ * Transpiles TypeScript source files.
+ * @param {string[]} srcGlobs - TypeScript files to be compiled
+ * @param {string} jsOutputDir - Where to write the output JS files
+ * @param {string} typingsOutputDir - Where to write the output .d.ts files
+ * @returns {Promise} A promise that is resolved with undefined when
+ * compilation is complete.  If an error occurs, the promise will be
+ * rejected with the error.
+ */
 function buildTypeScript(srcGlobs, jsOutputDir, typingsOutputDir) {
     "use strict";
 
@@ -81,10 +90,14 @@ function buildTypeScript(srcGlobs, jsOutputDir, typingsOutputDir) {
 }
 
 
-// Just like Node's child_process.exec(), but returns a promise.  The promise is
-// fulfilled (with stdout) when the process exits successfully.  If the process
-// exits with an error the promise is rejected with an object containing 'err',
-// 'stdout' and 'stderr' properties.
+/**
+ * Just like Node's child_process.exec(), but returns a promise.
+ * @param {string} command - The command to execute
+ * @param {object} options - See child_process.exec()
+ * @returns {Promise} A promise that is resolved with stdout when
+ * successful.  If an error occurs, the promise is rejected with an object
+ * containing "error", "stdout" and "stderr" properties.
+ */
 function exec(command, options) {
     "use strict";
 
@@ -102,7 +115,6 @@ function exec(command, options) {
                     return;
                 }
 
-                console.log(stdout);
                 resolve(stdout);
             }
         );
