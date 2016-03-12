@@ -53,39 +53,52 @@ function streamsToPromise(var_args) { //eslint-disable-line no-unused-vars
 function buildTypeScript(srcGlobs, jsOutputDir, typingsOutputDir) {
     "use strict";
 
-    var ts                   = require("gulp-typescript"),
-        sourcemaps           = require("gulp-sourcemaps"),
-        emitDeclarationFiles = !!typingsOutputDir,
-        tsResults,
-        streams              = [];
+    return new Promise(function (resolve, reject) {
 
-    tsResults = gulp
-        .src(srcGlobs /*, {base: 'src'}*/)
-        .pipe(sourcemaps.init())
-        .pipe(ts(
-            {
-                target:            "ES5",
-                declarationFiles:  emitDeclarationFiles,
-                noExternalResolve: false,
-                noEmitOnError:     true,
-                module:            "commonjs"
-            },
-            undefined,
-            ts.reporter.longReporter())
-        );
+        var ts                   = require("gulp-typescript"),
+            sourcemaps           = require("gulp-sourcemaps"),
+            emitDeclarationFiles = !!typingsOutputDir,
+            tsResults,
+            streams              = [];
 
-    // Add the js stream.
-    streams.push(tsResults.js
-                     .pipe(sourcemaps.write())
-                     .pipe(gulp.dest(jsOutputDir)));
+        tsResults = gulp
+            .src(srcGlobs /*, {base: 'src'}*/)
+            .pipe(sourcemaps.init())
+            .pipe(ts(
+                {
+                    target:            "ES5",
+                    declarationFiles:  emitDeclarationFiles,
+                    noExternalResolve: false,
+                    noEmitOnError:     true,
+                    module:            "commonjs"
+                },
+                undefined,
+                ts.reporter.longReporter())
+            );
 
-    // If creating declaration files, prepare that stream.
-    if (emitDeclarationFiles) {
-        streams.push(tsResults.dts
-                         .pipe(gulp.dest(typingsOutputDir)));
-    }
+        tsResults.js.on("error", function (err) {
+            reject(err);
+        });
 
-    return streamsToPromise.apply(null, streams);
+        if (emitDeclarationFiles) {
+            tsResults.dts.on("error", function (err) {
+                reject(err);
+            });
+        }
+
+        // Add the js stream.
+        streams.push(tsResults.js
+            .pipe(sourcemaps.write())
+            .pipe(gulp.dest(jsOutputDir)));
+
+        // If creating declaration files, prepare that stream.
+        if (emitDeclarationFiles) {
+            streams.push(tsResults.dts
+                .pipe(gulp.dest(typingsOutputDir)));
+        }
+
+        resolve(streamsToPromise.apply(null, streams));
+    });
 }
 
 
@@ -109,8 +122,8 @@ function exec(command, options) {
             function (err, stdout, stderr) {
                 if (err) {
                     reject({error:  err,
-                            stdout: stdout,
-                            stderr: stderr});
+                        stdout: stdout,
+                        stderr: stderr});
                     return;
                 }
 
